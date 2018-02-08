@@ -30,7 +30,7 @@ let messageToArray (s:string) =
 
 let encodeMessage (message:string) =
     let messageArray = messageToArray message
-    let columns = (messageArray.Length / 3)
+    let columns = (messageArray.Length / encode.RowCount)
     let M = Matrix<float>.Build
     let messageMatrix = M.Dense (encode.RowCount, columns, messageArray)
     let encoded = encode.Multiply (messageMatrix)
@@ -38,7 +38,7 @@ let encodeMessage (message:string) =
     encoded.ToColumnMajorArray()
 
 let decodeMessage (encodedMessage:float[]) =
-    let columns = encodedMessage.Length / 3;
+    let columns = encodedMessage.Length / encode.RowCount;
     let encodedMatrix = Matrix<float>.Build.DenseOfColumnMajor(encode.RowCount, columns, encodedMessage);
 
     let decodedMatrix = decode.Multiply(encodedMatrix);
